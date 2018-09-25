@@ -1,0 +1,26 @@
+version: '3'
+services:
+  hitobito:
+    depends_on:
+      - dbs
+    build: .
+    ports:
+      - "3000:80"
+    environment:
+      RAILS_DB_NAME: ${DATABASE_NAME}
+      RAILS_DB_USERNAME: ${DATABASE_USER}
+      RAILS_DB_PASSWORD: ${DATABASE_PASS}
+      RAILS_DB_HOST: dbs
+      RAILS_DB_ADAPTER: mysql2
+      RAILS_ROOT_USER_EMAIL: ${HITOBITO_USER}
+  dbs:
+    image: mysql:5.7
+    volumes:
+      - db_data:/var/lib/mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DATABASE_PASS}
+      MYSQL_DATABASE: ${DATABASE_NAME}
+
+volumes:
+  db_data:
